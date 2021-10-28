@@ -1,0 +1,201 @@
+<!doctype html> 
+
+<html>
+<head>
+    <title>Labyrinthe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+    <body>
+    <div class="page">
+                <div id="laby">
+        
+                </div>
+                
+            <input type="button" value="GO" onclick="afficheLaby();"><br/><BR><BR>
+
+            <div class="page2">
+                
+                <input type="button" value="up" class="navigationUp"> 
+                <input type="button" value="down" class="navigationDown"> 
+                <input type="button" value="left" class="navigationLeft"> 
+                <input type="button" value="right" class="navigationRight"> 
+
+                <h2 id="information">test</h2>
+        
+            </div>
+            <!-- ajouter vos boutons de déplacement ici -->
+        </div>
+ 
+    <script language="JavaScript">
+        m='m'; //représente un mur
+        p='p'; //représente le personnage
+        b='b'; //représente le chemin
+        f="f"; //représente le trophée 
+
+        var xperso=1; //position initial du personnage sur l'axe X
+        var yperso=1; //postition initial du personnage sur l'axe Y
+        //tableau à double entrée représentant votre labyrinthe, vous pouvez le modifier pour comprendre le fonctionnement
+        var laby = [[m,m,m,m,m,m,m,m,m,m],
+                    [m,p,m,b,b,b,b,b,b,m],
+                    [m,b,m,b,m,m,m,b,m,m],
+                    [m,b,m,b,m,b,m,b,b,m],
+                    [m,b,b,b,m,b,m,m,b,m],
+                    [m,b,m,b,m,b,b,b,b,f],
+                    [m,m,m,m,m,m,m,m,m,m]];
+                   
+                   
+      
+         
+        function afficheLaby() //ne rien modifier dans cette fonction
+        {
+            var leLaby=document.getElementById("laby");
+            insertion="<table border=0 cellspacing=0 cellpadding=0>";
+         
+         
+            for(i=0;i<7;i++)
+            {
+            insertion+="<tr>";
+                for(j=0;j<10;j++)
+                {
+                 
+                    if (laby[i][j]==m)
+                    {
+                    insertion+="<td>";
+                    insertion+="<img width='52'height='52' src='Assets/stonewall.png'>";
+                    insertion+="</td>";
+                    }
+                    if (laby[i][j]==p)
+                    {
+                    insertion+="<td>";
+                    insertion+="<img width='52' height='52' style='background-image:Assets/Ground.png' src='Assets/Heros.png'>";
+                    insertion+="</td>";
+                    }
+                    if (laby[i][j]==b)
+                    {
+                    insertion+="<td>";
+                    insertion+="<img width='52' height='52' src='Assets/Ground.png'>";
+                    insertion+="</td>";
+                    }
+
+                     
+                    if (laby[i][j]==f)
+                    {
+                    insertion+="<td>";
+                    insertion+="<img width='52' height='52'src='Assets/Trophy.png'>";
+                    insertion+="</td>";
+                    }
+                     
+             
+                     
+                }
+                insertion+="</tr>";
+            }  
+             
+            insertion+="</table>";
+            leLaby.innerHTML=insertion;
+        }
+         
+        const NAVIGATIONUP = document.querySelector(".navigationUp")
+        var navigationcliqueUp = NAVIGATIONUP.addEventListener("click", ()=> {mouvement('up')}, false)
+        const NAVIGATIONDOWN = document.querySelector(".navigationDown")
+        var navigationcliqueDown = NAVIGATIONDOWN.addEventListener("click", ()=> {mouvement('down')}, false)
+        const NAVIGATIONLEFT = document.querySelector(".navigationLeft")
+        var navigationcliqueLeft = NAVIGATIONLEFT.addEventListener("click", ()=> {mouvement('left')}, false)
+        const NAVIGATIONRIGHT = document.querySelector(".navigationRight")
+        var navigationcliqueRight = NAVIGATIONRIGHT.addEventListener("click", ()=> {mouvement('right')}, false)
+
+
+        function mouvement(type){
+
+            switch(type){
+                case "up":
+                    var newxperso = xperso;
+                    var newyperso = yperso -1;
+                    break;
+                    
+                case "down":
+                    var newxperso = xperso;
+                    var newyperso = yperso +1;
+                    break;
+                case "left":
+                    var newxperso = xperso -1;
+                    var newyperso = yperso;
+                    break;
+                case "right":
+                    var newxperso = xperso +1;
+                    var newyperso = yperso;
+                    break;
+            }        
+            
+             window.addEventListener( "keydown",function (event) {
+
+                switch (event.key) {
+
+                case 'ArrowDown':
+
+                    var newxp = xperso;
+
+                    var newyp = yperso +1;
+
+                     break;
+
+                case 'ArrowUp':
+
+                    var newxp = xperso;
+
+                    var newyp = yperso -1;
+
+                    break;
+
+                case 'ArrowLeft':
+
+                    var newxp = xperso -1;
+
+                    var newyp = yperso;
+
+                    break;
+
+                case 'ArrowRight':
+
+                    var newxp = xperso +1;
+
+                    var newyp = yperso;
+
+                    break;
+
+            var np = laby[newyperso][newxperso];
+            console.log(np);
+            if(np == "b" || np == "f"){
+                var op = laby[yperso][xperso];
+                laby[newyperso][newxperso] = op;
+                laby[yperso][xperso] = np;
+                xperso =newxperso;
+                yperso = newyperso;
+            }
+            if (np == "f") {
+                document.querySelector("#information").innerHTML= "Bravo tu as gagné"
+                
+            }
+            if (np == "b") {
+                document.querySelector("#information").innerHTML= ""
+                
+            }
+            if (np == m){
+                document.querySelector("#information").innerHTML= "tu ne peux pas foncer dans le mur !"
+            
+            }
+            
+            afficheLaby()
+
+
+            
+
+    }
+            
+            
+    </script>
+</body>
+</html>
+
+
+       
